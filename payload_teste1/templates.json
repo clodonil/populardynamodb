@@ -1,0 +1,8 @@
+{
+    "name" : "pipeline1",
+    "details" : {
+        "valor1" : "teste",
+        "valor2" : "teste2",
+        "valor3" : "teste3"
+    }   
+}
