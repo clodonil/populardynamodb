@@ -11,14 +11,15 @@ import boto3
 import json
 import glob
 import sys
+from config import dynamodb
 
 
 
 def save_dynamodb(dados):    
    resource_id = dados.pop('name')
-   dynamodb  = boto3.resource('dynamodb')
-   tablename = 'wasabi-template-produced'
-   table = dynamodb.Table(tablename)
+   dy = boto3.resource('dynamodb')
+   tablename =  dynamodb['template']
+   table = dy.Table(tablename)
    print(f"--> Upload do template *{resource_id}* na tabela *{tablename}* do dynamodb", end =" ")
    table.update_item(Key={'name' :resource_id},
                       UpdateExpression="set detail = :a",
@@ -28,7 +29,7 @@ def save_dynamodb(dados):
    print('[ Salvo ]')
 
 def listar_arquivos(path):
-    files = glob.glob(path + '/*/templates.json')
+    files = glob.glob(path + '/*/*.json')
     return files
 
 def get_template_json(file):
@@ -49,6 +50,3 @@ if __name__ == '__main__':
     for file in files:
         dados = get_template_json(file)
         save_dynamodb(dados)
-
-#    update(table,id,pipeline)
-#    print(json.dumps(search(id), indent=4, sort_keys=True))
